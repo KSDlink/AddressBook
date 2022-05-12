@@ -2,7 +2,7 @@
 <div class='my-3' v-if='contacts.length > 0'>
   <transition-group name='contact-list' tag='div'>
     <address-item
-      v-for='contact in contacts'
+      v-for='contact in props.contacts'
       :key='contact.id'
       :contact='contact'
       @removeContact='removeContact'
@@ -17,29 +17,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+export default {
+    name: 'address-list'
+}
+</script>
+
+<script setup lang="ts">
+import { defineProps, defineEmits } from 'vue';
+import {contactItem} from '@/types';
 import AddressItem from '@/components/AddressItem.vue';
-import {contactItem} from '@/types'
 
-
-export default defineComponent ({
-  components: { AddressItem },
-  name: 'address-list',
-  props: {
-    contacts: {
-      type: Array,
-      required: true
-    } 
-  },
-  methods: {
-    removeContact(contact: contactItem){
-      this.$emit('removeContact', contact);
-    },
-    updateContact(contact: contactItem){
-      this.$emit('updateContact', contact);
-    }
+const props = defineProps({
+  contacts: {
+    type: Array,
+    required: true,
   }
-});
+})
+
+const emit = defineEmits(['removeContact', 'updateContact']);
+
+const removeContact = (contact: contactItem) => {
+  emit('removeContact', contact);
+}
+
+const updateContact = (contact: contactItem) => {
+  emit('updateContact', contact);
+}
 </script>
 
 <style scoped>

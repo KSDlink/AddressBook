@@ -1,18 +1,23 @@
 <template>
-  <input :value='modelValue' @input='updateInput'>
+  <input :value='props.modelValue' @input='updateInput'>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-    name: 'custom-input',
-    props: {
-        modelValue: String
-    },
-    methods: {
-        updateInput(event) {
-            this.$emit('update:modelValue', event.target.value)
-        }
-    }
+    name: 'custom-input'
+}
+</script>
+
+<script setup lang="ts">
+import { defineProps, defineEmits } from 'vue';
+const props = defineProps({
+    modelValue: String,
+})
+
+const emit = defineEmits(['update:modelValue']);
+
+const updateInput = (event: any) => {
+    emit('update:modelValue', event.target.value);
 }
 </script>
 

@@ -1,26 +1,32 @@
 <template>
-  <div class='dialog' v-if='show === true' @click.stop='hideDialog'>
+  <div class='dialog' v-if='props.show === true' @click.stop='hideDialog'>
     <div class='dialog__content' @click.stop>
         <slot></slot>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-    name: 'custom-dialog',
-    props: {
-        show: {
-            type: Boolean,
-            default: false,
-        }
-    },
-    methods: {
-        hideDialog(){
-          this.$emit('update:show', false);
-        }
-    }
+    name: 'custom-dialog'
 }
+</script>
+
+
+<script setup lang="ts">
+import { defineProps, defineEmits } from 'vue';
+  const props = defineProps({ //СПРОСИ
+    show: {
+      type: Boolean,
+      default: false,
+    }
+  });
+
+  const emit = defineEmits(['update:show']);
+
+  const hideDialog = () => {
+    emit('update:show', false);
+  }
 </script>
 
 <style scoped>
